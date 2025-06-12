@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21449e69734a419468d9567382d503e9, type: 3}
+  m_Name: ShapeVisualConfig
+  m_EditorClassIdentifier: 
+  circleSprite: {fileID: 21300000, guid: e3f526d30ac2f28449f3947775c6f8d3, type: 3}
+  squareSprite: {fileID: 0}
+  triangleSprite: {fileID: 446955973089272727, guid: 92a76ad8b3a02764a8991682991d1760, type: 3}
+  circleBorder: {fileID: -4164630822507041897, guid: 15c415a1729f9a446bed9cf0c19fcdbc, type: 3}
+  squareBorder: {fileID: 0}
+  triangleBorder: {fileID: 8314384575524355642, guid: 5469091f71058c1428e2a519b4e16f25, type: 3}
+  circleCollider: {fileID: 5480558389092802402, guid: 506e7a216b75f624e9c72f39d047059e, type: 3}
+  squareCollider: {fileID: 0}
+  triangleCollider: {fileID: 9150140172533327157, guid: 9ac86c5d056712743b97f562f4a4ca8b, type: 3}
