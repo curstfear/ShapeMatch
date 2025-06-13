@@ -9,17 +9,17 @@ public class ActionBar : MonoBehaviour
     public UnityEvent OnLose;
     public UnityEvent OnWin;
 
+    public UnityEvent OnMatch;
+
     [SerializeField] private Transform[] _slots = new Transform[7];
 
     private List<Tile> _tiles = new List<Tile>();
     private GameManager _gameManager;
-    private VFXController _vfxController;
 
     [Inject]
-    private void Construct(GameManager gameManager, VFXController vfxController)
+    private void Construct(GameManager gameManager)
     {
         _gameManager = gameManager;
-        _vfxController = vfxController;
     }
 
     public void AddTile(Tile tile)
@@ -69,7 +69,7 @@ public class ActionBar : MonoBehaviour
             {
                 tilesToRemove.AddRange(entry.Value);
                 matchFound = true;
-                _vfxController.MatchDestroyPlayVFX();
+                OnMatch?.Invoke();
             }
         }
 
@@ -97,7 +97,7 @@ public class ActionBar : MonoBehaviour
 
     private void ReorganizeTiles()
     {
-        // Перемещаем существующие тайлы в первые свободные слоты
+
         for (int i = 0; i < _tiles.Count; i++)
         {
             if (_tiles[i] != null && i < _slots.Length && _slots[i] != null)
@@ -108,7 +108,6 @@ public class ActionBar : MonoBehaviour
             }
         }
 
-        // Очищаем оставшиеся слоты
         for (int i = _tiles.Count; i < _slots.Length; i++)
         {
             if (_slots[i] != null)
@@ -125,12 +124,10 @@ public class ActionBar : MonoBehaviour
     {
         if (_tiles.Count >= _slots.Length)
         {
-            Debug.Log("ActionBar full - Game Over!");
             OnLose.Invoke();
         }
         else if (_gameManager != null && _gameManager.CountTilesInArea == 0 && _tiles.Count == 0)
         {
-            Debug.Log("All tiles cleared - Victory!");
             OnWin.Invoke();
         }
     }
@@ -156,5 +153,10 @@ public class ActionBar : MonoBehaviour
         }
         return null;
     }
+    public int GetTileCount() => _tiles.Count;
 
+    public List<Tile> GetAllTiles()
+    {
+        return _tiles.Where(tile => tile != null).ToList();
+    }
 }

@@ -1,8 +1,11 @@
 using UnityEngine;
+using UnityEngine.Events;
 using Zenject;
 
 public class Tile : MonoBehaviour
 {
+    public static UnityEvent<Tile> OnTileClicked = new UnityEvent<Tile>();
+
     [SerializeField] private SpriteRenderer _shapeSprite;
     [SerializeField] private SpriteRenderer _animalIconSprite;
     [SerializeField] private SpriteRenderer _borderSprite;
@@ -11,11 +14,13 @@ public class Tile : MonoBehaviour
     private bool _isClickable = false;
     private TileAnimations _tileAnimations;
     private ActionBar _actionBar;
+    private GameArea _gameArea;
 
     [Inject]
-    private void Construct(ActionBar actionBar)
+    private void Construct(ActionBar actionBar, TileSpawner tileSpawner, GameArea gameArea)
     {
         _actionBar = actionBar;
+        _gameArea = gameArea;
     }
 
     private void Awake()
@@ -23,15 +28,18 @@ public class Tile : MonoBehaviour
         _tileAnimations = GetComponent<TileAnimations>();
     }
 
-    private void Start()
+    private void OnEnable()
     {
-        GameArea.OnTilesClickabilityChanged.AddListener(SetClickable);
+        _gameArea.OnAllTilesInArea.AddListener(SetClickable);
+        _actionBar.OnLose.AddListener(() => SetClickable(false));
     }
 
-    private void OnDestroy()
+    private void OnDisable()
     {
-        GameArea.OnTilesClickabilityChanged.RemoveListener(SetClickable);
+        _gameArea.OnAllTilesInArea.RemoveListener(SetClickable);
+        _actionBar.OnLose.RemoveListener(() => SetClickable(false));
     }
+
 
     public void Initialize(ShapeData data, ShapeVisualConfig visualConfig)
     {
@@ -106,7 +114,8 @@ public class Tile : MonoBehaviour
     {
         if (_isClickable && _tileAnimations != null)
         {
-            _isClickable = false; // Чтобы не кликали несколько раз
+            _isClickable = false;
+            OnTileClicked.Invoke(this);
             _tileAnimations.PlayMoveToActionBarAnimation();
         }
     }
@@ -115,7 +124,8 @@ public class Tile : MonoBehaviour
     {
         if (_isClickable && _tileAnimations != null)
         {
-            _isClickable = false; // Чтобы не кликали несколько раз
+            _isClickable = false;
+            OnTileClicked.Invoke(this);
             _tileAnimations.PlayMoveToActionBarAnimation();
         }
     }

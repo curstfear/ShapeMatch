@@ -4,10 +4,11 @@ using Zenject;
 
 public class GameArea : MonoBehaviour
 {
+    public UnityEvent<bool> OnAllTilesInArea = new UnityEvent<bool>();
+
     private GameManager _gameManager;
     private Canvas _canvas;
     private TileSpawner _tileSpawner;
-    public static UnityEvent<bool> OnTilesClickabilityChanged = new UnityEvent<bool>();
 
     [Inject]
     private void Construct(GameManager gameManager, Canvas canvas, TileSpawner tileSpawner)
@@ -17,18 +18,16 @@ public class GameArea : MonoBehaviour
         _tileSpawner = tileSpawner;
     }
 
-    private void Start()
-    {
-        CheckAndSetTilesClickability();
-    }
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Tile"))
         {
-            _gameManager.CountTilesInArea++;
-            CheckCanvasOrder();
-            CheckAndSetTilesClickability();
+            Tile tile = collision.GetComponent<Tile>();
+            if (tile != null)
+            {
+                _gameManager.AddTileToArea(tile);
+                CheckAllTilesInArea();
+            }
         }
     }
 
@@ -36,33 +35,29 @@ public class GameArea : MonoBehaviour
     {
         if (collision.CompareTag("Tile"))
         {
-            _gameManager.CountTilesInArea--;
-            CheckCanvasOrder();
+            Tile tile = collision.GetComponent<Tile>();
+            if (tile != null)
+            {
+                _gameManager.RemoveTileFromArea(tile);
+                CheckAllTilesInArea();
+            }
         }
     }
 
-    private void CheckAndSetTilesClickability()
-    {
-        int totalTilesToSpawn = _tileSpawner.GetTotalTilesToSpawn();
-        bool shouldBeClickable = (_gameManager.CountTilesInArea == totalTilesToSpawn);
-
-        if (shouldBeClickable != _gameManager.AreTilesClickableInArea)
-        {
-            _gameManager.SetTilesClickableInArea(shouldBeClickable);
-            OnTilesClickabilityChanged.Invoke(shouldBeClickable);
-        }
-    }
-
-    private void CheckCanvasOrder()
+    private void CheckAllTilesInArea()
     {
         int totalTiles = _tileSpawner.GetTotalTilesToSpawn();
-        if (_gameManager.CountTilesInArea == totalTiles && _canvas != null)
+        int tilesInArea = _gameManager.CountTilesInArea;
+
+        if (tilesInArea == totalTiles && _canvas != null)
         {
             _canvas.sortingOrder = -1;
+            OnAllTilesInArea?.Invoke(true);
         }
-        else if (_gameManager.CountTilesInArea == 0 && _canvas != null)
+        else if (tilesInArea == 0 && _canvas != null)
         {
             _canvas.sortingOrder = 0;
+            OnAllTilesInArea?.Invoke(false);
         }
     }
 }

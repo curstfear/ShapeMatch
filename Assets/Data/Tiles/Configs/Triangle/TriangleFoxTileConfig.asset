@@ -15,4 +15,4 @@ MonoBehaviour:
   AnimalIcon: {fileID: 21300000, guid: 1860281a866b6c44e995dcdbec8042a3, type: 3}
   ShapeColor: {r: 0.5943396, g: 0.33795783, b: 0, a: 0}
   Shape: 2
-  SpecialType: 0
+  SpecialType: 1
