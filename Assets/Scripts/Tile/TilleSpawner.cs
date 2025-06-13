@@ -1,50 +1,49 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 public class TileSpawner : MonoBehaviour
 {
-    [SerializeField] private Transform _spawnPoint;
+    [SerializeField] private float _spawnInterval = 0.1f;
+    [SerializeField] private int _shapeMultiplier = 3;
     [SerializeField] private GameObject _tilePrefab;
     [SerializeField] private ShapeVisualConfig _shapeVisuals;
-    [SerializeField] private List<ShapeData> _allTilesData;
     [SerializeField] private Transform _spawnArea;
-    [SerializeField] private float _spawnInterval;
- 
+    [SerializeField] private List<ShapeData> _allTilesData;
+
+    private DiContainer _container;
+
+    [Inject]
+    private void Construct(DiContainer container)
+    {
+        _container = container;
+    }
+
     private void Start()
     {
         StartCoroutine(SpawnTiles());
     }
 
-    private System.Collections.IEnumerator SpawnTiles()
+    private IEnumerator SpawnTiles()
     {
         foreach (ShapeData data in _allTilesData)
         {
-            for (int i = 0; i < 3; i++) // Создаём 3 копии каждого конфига
+            for (int i = 0; i < _shapeMultiplier; i++)
             {
                 Vector3 spawnPos = transform.position;
-                GameObject tileGO = Instantiate(_tilePrefab, spawnPos, Quaternion.identity, _spawnArea);
+
+                // Создаем тайл через Zenject для инжекции ActionBar
+                GameObject tileGO = _container.InstantiatePrefab(_tilePrefab, spawnPos, Quaternion.identity, _spawnArea);
                 Tile tile = tileGO.GetComponent<Tile>();
+
+                // Инициализируем
                 tile.Initialize(data, _shapeVisuals);
+
                 yield return new WaitForSeconds(_spawnInterval);
             }
         }
     }
 
-    private List<ShapeData> GenerateTileSet()
-    {
-        List<ShapeData> tiles = new List<ShapeData>();
-        int tilesPerType = 3; // Кратность трём
-        int totalTiles = 30; // Примерное количество фигурок на поле
-        int typesToUse = totalTiles / tilesPerType;
-
-        for (int i = 0; i < typesToUse; i++)
-        {
-            ShapeData randomTile = _allTilesData[Random.Range(0, _allTilesData.Count)];
-            for (int j = 0; j < tilesPerType; j++)
-            {
-                tiles.Add(randomTile);
-            }
-        }
-        return tiles;
-    }
+    public int GetTotalTilesToSpawn() => _allTilesData.Count * _shapeMultiplier;
 }

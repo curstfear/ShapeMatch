@@ -15,7 +15,7 @@ public class ShapeVisualConfig : ScriptableObject
 
     [Header("Predefined Colliders")]
     public CircleCollider2D circleCollider;
-    public BoxCollider2D squareCollider;
+    public PolygonCollider2D squareCollider;
     public PolygonCollider2D triangleCollider;
 
 

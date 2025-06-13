@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: ShapeVisualConfig
   m_EditorClassIdentifier: 
   circleSprite: {fileID: 21300000, guid: e3f526d30ac2f28449f3947775c6f8d3, type: 3}
-  squareSprite: {fileID: 0}
+  squareSprite: {fileID: -259924861727911357, guid: 1751281d6384cde48b0c3c7106284800, type: 3}
   triangleSprite: {fileID: 446955973089272727, guid: 92a76ad8b3a02764a8991682991d1760, type: 3}
   circleBorder: {fileID: -4164630822507041897, guid: 15c415a1729f9a446bed9cf0c19fcdbc, type: 3}
-  squareBorder: {fileID: 0}
+  squareBorder: {fileID: 2030180356143393836, guid: 0404663b04aac8b47821a194b4452b21, type: 3}
   triangleBorder: {fileID: 8314384575524355642, guid: 5469091f71058c1428e2a519b4e16f25, type: 3}
   circleCollider: {fileID: 5480558389092802402, guid: 506e7a216b75f624e9c72f39d047059e, type: 3}
-  squareCollider: {fileID: 0}
+  squareCollider: {fileID: 7391342453675791450, guid: 25b59226c33685640b8358b004121690, type: 3}
   triangleCollider: {fileID: 9150140172533327157, guid: 9ac86c5d056712743b97f562f4a4ca8b, type: 3}
