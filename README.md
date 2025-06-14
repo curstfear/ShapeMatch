@@ -28,6 +28,6 @@ Unity 6000.0.49f1 | Android
 [[Ссылка на Google Drive (геймплей)](https://drive.google.com/file/d/1rdL5f7wEck4CJ6tgIAveDaxvyu-QECLo/view?usp=sharing)]
 
 ## 📧 Контакты
-Селезнёв Михаил 
-Telegram: @withxutdrexm
-Email: mishalxrd@gmail.com
+- Селезнёв Михаил 
+- Telegram: @withxutdrexm
+- Email: mishalxrd@gmail.com
